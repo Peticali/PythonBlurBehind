@@ -15,7 +15,7 @@ You can install it with pip::
     blur(hWnd)
 
 
-Full Example::
+Full Example:
 
 .. code-block:: python
 
