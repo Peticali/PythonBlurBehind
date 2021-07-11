@@ -1,5 +1,3 @@
-# PythonBlurBehind
-
 Installation
 ------------
 
@@ -7,6 +5,8 @@ You can install it with pip::
 
     python -m pip install BlurWindow
 
+
+Example:
 
 .. code-block:: python
 
