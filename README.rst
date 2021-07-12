@@ -23,7 +23,7 @@ Parameters:
 
     blur(HWND,hexColor=False,Acrylic=False,Dark=False)
 
-    #in windows 7 or older:
+    #in windows 7 or older: (scroll down for image)
     Win7Blur(HWND)
 
 
@@ -38,22 +38,27 @@ Example:
 
     from BlurWindow.blurWindow import blur
 
+
     class MainWindow(QWidget):
         def __init__(self):
             super(MainWindow, self).__init__()
             self.setAttribute(Qt.WA_TranslucentBackground)
             self.resize(500, 400)
 
-            hWnd = self.winId()
-            print(hWnd)
-            blur(hWnd)
+            blur(self.winId(),Dark=True)
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
 
-
     if __name__ == '__main__':
         app = QApplication(sys.argv)
-        mw = MainWindow() #you can blur MainWindow too
+        mw = MainWindow()
         mw.show()
         sys.exit(app.exec_())
+
+
+
+Windows 7:
+
+.. image:: https://i.imgur.com/ANA0gzF.png
+    :width: 400
