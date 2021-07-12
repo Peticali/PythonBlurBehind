@@ -1,8 +1,9 @@
-#source: https://github.com/Opticos/GWSL-Source/blob/master/blur.py , https://www.cnblogs.com/zhiyiYo/p/14659981.html
+#source: https://github.com/Opticos/GWSL-Source/blob/master/blur.py , https://www.cnblogs.com/zhiyiYo/p/14659981.html , https://github.com/ifwe/digsby/blob/master/digsby/src/gui/vista.py
 
+from ctypes.wintypes import  DWORD, BOOL, HRGN
 import ctypes
 user32 = ctypes.windll.user32
-
+dwm = ctypes.windll.dwmapi
 
 class ACCENTPOLICY(ctypes.Structure):
     _fields_ = [
@@ -22,6 +23,22 @@ class WINDOWCOMPOSITIONATTRIBDATA(ctypes.Structure):
 
 
 
+class DWM_BLURBEHIND(ctypes.Structure):
+    _fields_ = [
+        ('dwFlags', DWORD), 
+        ('fEnable', BOOL),  
+        ('hRgnBlur', HRGN), 
+        ('fTransitionOnMaximized', BOOL) 
+    ]
+
+def Win7Blur(HWND):
+    DWM_BB_ENABLE = 0x01
+    bb = DWM_BLURBEHIND()
+    bb.dwFlags = DWM_BB_ENABLE
+    bb.fEnable = 1
+    bb.hRgnBlur = 1
+    dwm.DwmEnableBlurBehindWindow(HWND, ctypes.byref(bb))
+
 def HEXtoRGBAint(HEX:str):
     alpha = HEX[7:]
     blue = HEX[5:7]
@@ -30,8 +47,6 @@ def HEXtoRGBAint(HEX:str):
 
     gradientColor = alpha + blue + green + red
     return int(gradientColor, base=16)
-
-
 
 def blur(HWND,hexColor=False,Acrylic=False):
     accent = ACCENTPOLICY()

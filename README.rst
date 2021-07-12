@@ -14,7 +14,11 @@ Parameters:
     #HWND = PID
     #Acrylic = True/False #For Acrylic Design (lags)
     #hexColor = Background color, False for nothing
+
     blur(HWND,hexColor=False,Acrylic=False)
+
+    #in windows 7 or older:
+    Win7Blur(HWND)
 
 
 
