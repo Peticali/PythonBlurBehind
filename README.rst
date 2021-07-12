@@ -6,6 +6,11 @@ You can install it with pip::
     python -m pip install BlurWindow
 
 
+Preview:
+
+.. image:: https://i.imgur.com/sBNxXQE.png
+    :width: 400
+
 
 Parameters:
 
