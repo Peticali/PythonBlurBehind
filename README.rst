@@ -6,16 +6,19 @@ You can install it with pip::
     python -m pip install BlurWindow
 
 
-Example:
+
+Parameters:
 
 .. code-block:: python
 
-    from BlurWindow.blurWindow import blur
-    hWnd = self.winId()
-    blur(hWnd)
+    #HWND = PID
+    #Acrylic = True/False #For Acrylic Design (lags)
+    #hexColor = Background color, False for nothing
+    blur(HWND,hexColor=False,Acrylic=False)
 
 
-Full Example:
+
+Example:
 
 .. code-block:: python
 
@@ -43,6 +46,6 @@ Full Example:
 
     if __name__ == '__main__':
         app = QApplication(sys.argv)
-        mw = MainWindow()
+        mw = MainWindow() #you can blur MainWindow too
         mw.show()
         sys.exit(app.exec_())
