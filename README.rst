@@ -12,7 +12,7 @@ Preview:
     :width: 400
 
 
-Parameters:
+Parameters/Functions:
 
 .. code-block:: python
 
@@ -26,6 +26,8 @@ Parameters:
     #in windows 7 or older: (scroll down for image)
     Win7Blur(HWND)
 
+    #NEW, Blur Windows Vista, 7, 8, 8.1, 10, 11 auto
+    GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False)
 
 
 Example:
@@ -36,7 +38,7 @@ Example:
     from PySide2.QtWidgets import *
     from PySide2.QtCore import *
 
-    from BlurWindow.blurWindow import blur
+    from BlurWindow.blurWindow import GlobalBlur
 
 
     class MainWindow(QWidget):
@@ -45,7 +47,7 @@ Example:
             self.setAttribute(Qt.WA_TranslucentBackground)
             self.resize(500, 400)
 
-            blur(self.winId(),Dark=True)
+            GlobalBlur(self.winId(),Dark=True)
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
@@ -58,7 +60,7 @@ Example:
 
 
 
-Windows 7:
+Windows 7/Vista:
 
 .. image:: https://i.imgur.com/ANA0gzF.png
     :width: 400

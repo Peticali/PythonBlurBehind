@@ -4,7 +4,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 import time
-from BlurWindow.blurWindow import blur
+from BlurWindow.blurWindow import GlobalBlur
 
 
 
@@ -27,5 +27,5 @@ if __name__ == '__main__':
     app = QApplication(sys.argv)
     mw = MainWindow()
     mw.show()
-    blur(mw.winId(),Acrylic=True)
+    GlobalBlur(mw.winId(),Acrylic=True)
     sys.exit(app.exec_())

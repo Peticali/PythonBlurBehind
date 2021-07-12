@@ -2,7 +2,7 @@ import sys
 from PySide2.QtWidgets import *
 from PySide2.QtCore import *
 
-from BlurWindow.blurWindow import blur
+from BlurWindow.blurWindow import GlobalBlur
 
 
 
@@ -12,7 +12,7 @@ class MainWindow(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.resize(500, 400)
 
-        blur(self.winId(),Dark=True)
+        GlobalBlur(self.winId(),Dark=True)
 
         self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 

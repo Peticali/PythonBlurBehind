@@ -1,7 +1,7 @@
 from tkinter import *
 import ctypes
 
-from BlurWindow.blurWindow import blur,Win7Blur
+from BlurWindow.blurWindow import blur,Win7Blur,GlobalBlur
 
 root = Tk()
 root.config(bg='green')
@@ -12,7 +12,7 @@ root.update()
 
 global HWND
 HWND = ctypes.windll.user32.GetForegroundWindow()
-blur(HWND)
+GlobalBlur(HWND)
 
 
 def color(hex):

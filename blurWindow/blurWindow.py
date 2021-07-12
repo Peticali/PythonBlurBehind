@@ -92,6 +92,18 @@ def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
         data.Attribute = 26 #WCA_USEDARKMODECOLORS
         user32.SetWindowCompositionAttribute(HWND, data)
 
+def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False):
+    import platform
+    release = platform.release()
+    
+    if release == 'Vista': 
+        Win7Blur(HWND)
+    else:
+        release = int(float(release))
+        if release == 10 or release == 8 or release == 11: #idk what windows 8.1 spits, if is '8.1' int(float(release)) will work...
+            blur(HWND,hexColor,Acrylic,Dark)
+        else:
+            Win7Blur(HWND)
 
 if __name__ == '__main__':
     import sys
@@ -107,7 +119,7 @@ if __name__ == '__main__':
 
             hWnd = self.winId()
             #print(hWnd)
-            blur(hWnd,Dark=True)
+            GlobalBlur(hWnd,Dark=True)
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
