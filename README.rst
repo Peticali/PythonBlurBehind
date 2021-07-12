@@ -14,8 +14,9 @@ Parameters:
     #HWND = PID
     #Acrylic = True/False #For Acrylic Design (lags)
     #hexColor = Background color, False for nothing
+    #Dark = White icons
 
-    blur(HWND,hexColor=False,Acrylic=False)
+    blur(HWND,hexColor=False,Acrylic=False,Dark=False)
 
     #in windows 7 or older:
     Win7Blur(HWND)

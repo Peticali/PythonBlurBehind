@@ -2,6 +2,7 @@
 
 from ctypes.wintypes import  DWORD, BOOL, HRGN
 import ctypes
+
 user32 = ctypes.windll.user32
 dwm = ctypes.windll.dwmapi
 
@@ -22,7 +23,6 @@ class WINDOWCOMPOSITIONATTRIBDATA(ctypes.Structure):
     ]
 
 
-
 class DWM_BLURBEHIND(ctypes.Structure):
     _fields_ = [
         ('dwFlags', DWORD), 
@@ -31,6 +31,15 @@ class DWM_BLURBEHIND(ctypes.Structure):
         ('fTransitionOnMaximized', BOOL) 
     ]
 
+
+class MARGINS(ctypes.Structure):
+    _fields_ = [("cxLeftWidth", ctypes.c_int),
+                ("cxRightWidth", ctypes.c_int),
+                ("cyTopHeight", ctypes.c_int),
+                ("cyBottomHeight", ctypes.c_int)
+                ]
+
+
 def Win7Blur(HWND):
     DWM_BB_ENABLE = 0x01
     bb = DWM_BLURBEHIND()
@@ -38,6 +47,12 @@ def Win7Blur(HWND):
     bb.fEnable = 1
     bb.hRgnBlur = 1
     dwm.DwmEnableBlurBehindWindow(HWND, ctypes.byref(bb))
+
+
+def ExtendFrameIntoClientArea(HWND):
+    margins = MARGINS(0, 0, 0, 0)
+    dwm.DwmExtendFrameIntoClientArea(HWND, ctypes.byref(margins))
+
 
 def HEXtoRGBAint(HEX:str):
     alpha = HEX[7:]
@@ -48,22 +63,22 @@ def HEXtoRGBAint(HEX:str):
     gradientColor = alpha + blue + green + red
     return int(gradientColor, base=16)
 
-def blur(HWND,hexColor=False,Acrylic=False):
+
+def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
     accent = ACCENTPOLICY()
-    accent.AccentState = 3 #Default window Blur
+    accent.AccentState = 3 #Default window Blur #ACCENT_ENABLE_BLURBEHIND
 
     gradientColor = 0
     
     if hexColor != False:
         gradientColor = HEXtoRGBAint(hexColor)
-        accent.AccentFlags = 2 #Window Blur With Accent Color
+        accent.AccentFlags = 2 #Window Blur With Accent Color #ACCENT_ENABLE_TRANSPARENTGRADIENT
     
     if Acrylic:
-        accent.AccentState = 4 #UWP but LAG
+        accent.AccentState = 4 #UWP but LAG #ACCENT_ENABLE_ACRYLICBLURBEHIND
         if hexColor == False: #UWP without color is translucent
             gradientColor = HEXtoRGBAint('#12121240') #placeholder color
-        
-        
+    
     accent.GradientColor = gradientColor
     
     data = WINDOWCOMPOSITIONATTRIBDATA()
@@ -73,8 +88,11 @@ def blur(HWND,hexColor=False,Acrylic=False):
     
     user32.SetWindowCompositionAttribute(HWND, data)
     
-    
-    
+    if Dark: 
+        data.Attribute = 26 #WCA_USEDARKMODECOLORS
+        user32.SetWindowCompositionAttribute(HWND, data)
+
+
 if __name__ == '__main__':
     import sys
     from PySide2.QtWidgets import *
@@ -89,17 +107,16 @@ if __name__ == '__main__':
 
             hWnd = self.winId()
             #print(hWnd)
-            #blur(hWnd)
+            blur(hWnd,Dark=True)
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
-
-
 
     app = QApplication(sys.argv)
     mw = MainWindow()
     mw.show()
 
-    blur(mw.winId())
+    #blur(mw.winId())
+    #ExtendFrameIntoClientArea(mw.winId())
 
     sys.exit(app.exec_())
 
