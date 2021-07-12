@@ -52,7 +52,7 @@ def blur(HWND,hexColor=False,Acrylic=False):
     accent.GradientColor = gradientColor
     
     data = WINDOWCOMPOSITIONATTRIBDATA()
-    data.Attribute = 19
+    data.Attribute = 19 #WCA_ACCENT_POLICY
     data.SizeOfData = ctypes.sizeof(accent)
     data.Data = ctypes.cast(ctypes.pointer(accent), ctypes.POINTER(ctypes.c_int))
     
