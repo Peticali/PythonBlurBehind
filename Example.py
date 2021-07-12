@@ -12,7 +12,7 @@ class MainWindow(QWidget):
         self.setAttribute(Qt.WA_TranslucentBackground)
         self.resize(500, 400)
 
-        blur(self.winId())
+        blur(self.winId(),Dark=True)
 
         self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
