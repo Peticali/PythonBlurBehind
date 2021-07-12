@@ -1,5 +1,5 @@
 from tkinter import *
-from ctypes import windll
+import ctypes
 
 from BlurWindow.blurWindow import blur
 
@@ -8,18 +8,14 @@ root.config(bg='green')
 
 root.wm_attributes("-transparent", 'green')
 root.geometry('500x400')
-
 root.update()
 
-hWnd = windll.user32.GetForegroundWindow()
-blur(hWnd)
-
-
+global HWND
+HWND = ctypes.windll.user32.GetForegroundWindow()
+blur(HWND,Acrylic=True)
 
 def color(hex):
-    hWnd = windll.user32.GetForegroundWindow()
-    blur(hWnd,hexColor=hex)
-    
+    blur(HWND,hexColor=hex)
 
 e = Entry(width=9)
 e.insert(0,'#12121240')
