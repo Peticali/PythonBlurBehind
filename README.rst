@@ -28,8 +28,6 @@ Example:
 
     from BlurWindow.blurWindow import blur
 
-
-
     class MainWindow(QWidget):
         def __init__(self):
             super(MainWindow, self).__init__()

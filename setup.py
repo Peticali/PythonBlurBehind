@@ -7,7 +7,7 @@ README = (HERE / "README.rst").read_text()
 
 setup(
     name="BlurWindow",
-    version="1.0.4",
+    version="1.0.5",
     description="Blur PySide windows.",
     url="https://github.com/Peticali/PythonBlurBehind",
     author="Peticali",
