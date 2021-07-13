@@ -1,3 +1,4 @@
+#https://github.com/sourcechord/FluentWPF/issues/42#issuecomment-873615119 idea
 from tkinter import *
 import ctypes
 from BlurWindow.blurWindow import blur,Win7Blur,GlobalBlur
