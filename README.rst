@@ -25,8 +25,11 @@ Parameters/Functions:
 
     #in windows 7 or older: (scroll down for image)
     Win7Blur(HWND)
+    
+    #in Linux (may not work for all distros, scroll down for image)
+    BlurLinux(HWND)
 
-    #NEW, Blur Windows Vista, 7, 8, 8.1, 10, 11 auto
+    #NEW, Blur Windows Vista, 7, 8, 8.1, 10, 11, Linux auto
     GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False)
 
 
@@ -63,4 +66,9 @@ Example:
 Windows 7/Vista:
 
 .. image:: https://i.imgur.com/ANA0gzF.png
+    :width: 400
+    
+Linux (Deepin):
+
+.. image:: https://i.imgur.com/h4TCByr.png
     :width: 400
