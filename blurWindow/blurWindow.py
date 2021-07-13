@@ -144,4 +144,3 @@ if __name__ == '__main__':
     #ExtendFrameIntoClientArea(mw.winId())
 
     sys.exit(app.exec_())
-
