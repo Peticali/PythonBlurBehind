@@ -1,31 +1,39 @@
-#WorkAround source: https://github.com/negated-py/qtacrylic (lol i didn't know that exist a project that did the same as mine)
+from tkinter import *
+import ctypes
+from BlurWindow.blurWindow import blur,Win7Blur,GlobalBlur
 
-import sys
-from PySide2.QtWidgets import *
-from PySide2.QtCore import *
-import time
-from BlurWindow.blurWindow import GlobalBlur
+root = Tk()
+root.config(bg='green')
 
+root.wm_attributes("-transparent", 'green')
+root.geometry('500x400')
+root.update()
 
+global HWND
+HWND = ctypes.windll.user32.GetForegroundWindow()
 
-class MainWindow(QWidget):
-    def moveEvent(self, event) -> None:#here
-        time.sleep(0.02)  
+GlobalBlur(HWND,Acrylic=True) #Enable Acrylic
 
-    def resizeEvent(self, event) -> None:#here
-        time.sleep(0.02) 
-        
-    def __init__(self):
-        super(MainWindow, self).__init__()
-        self.setAttribute(Qt.WA_TranslucentBackground)
-        self.resize(500, 400)
-        self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
+global ACRYLIC_ENABLED
+ACRYLIC_ENABLED = True
 
+global DRAG
+DRAG = False
 
+def dragging(event):
+    global DRAG
+    if event.widget is root: #if is event Configure of root (Drag,Resize)
+        if DRAG == False:#If Drag is disabled (set by stop_drag)
+            GlobalBlur(HWND,Acrylic=False)
+        else:
+            root.after_cancel(DRAG) #cancel task \/ (is dragging)
+        DRAG = root.after(200, stop_drag) #execute stop_drag after 200ms
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    mw = MainWindow()
-    mw.show()
-    GlobalBlur(mw.winId(),Acrylic=True)
-    sys.exit(app.exec_())
+def stop_drag():
+    global DRAG
+    DRAG = False
+    GlobalBlur(HWND,Acrylic=True) 
+
+root.bind('<Configure>', dragging)
+
+root.mainloop()

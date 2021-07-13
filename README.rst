@@ -17,7 +17,7 @@ Parameters/Functions:
 .. code-block:: python
 
     #HWND = PID
-    #Acrylic = True/False #For Acrylic Design (lags)
+    #Acrylic = True/False #For Acrylic Design (lag WorkAround https://github.com/Peticali/PythonBlurBehind/blob/main/Examples%20MUST%20SEE/LagWorkAround.py)
     #hexColor = Background color, False for nothing
     #Dark = White icons
 
