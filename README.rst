@@ -23,8 +23,8 @@ Parameters/Functions:
 
     blur(HWND,hexColor=False,Acrylic=False,Dark=False)
 
-    #in windows 7 or older: (scroll down for image)
-    Win7Blur(HWND)
+    #in windows 7 or older: (scroll down for image Acrylic True/False)
+    Win7Blur(HWND,Acrylic)
     
     #in Linux (may not work for all distros, scroll down for image)
     BlurLinux(HWND)
@@ -65,7 +65,7 @@ Example:
 
 Windows 7/Vista:
 
-.. image:: https://i.imgur.com/ANA0gzF.png
+.. image:: https://i.imgur.com/CgFlbwt.png
     :width: 400
     
 Linux (Deepin):
