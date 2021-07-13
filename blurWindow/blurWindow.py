@@ -1,43 +1,45 @@
 #source: https://github.com/Opticos/GWSL-Source/blob/master/blur.py , https://www.cnblogs.com/zhiyiYo/p/14659981.html , https://github.com/ifwe/digsby/blob/master/digsby/src/gui/vista.py
-
-from ctypes.wintypes import  DWORD, BOOL, HRGN
+import platform
 import ctypes
 
-user32 = ctypes.windll.user32
-dwm = ctypes.windll.dwmapi
-
-class ACCENTPOLICY(ctypes.Structure):
-    _fields_ = [
-        ("AccentState", ctypes.c_uint),
-        ("AccentFlags", ctypes.c_uint),
-        ("GradientColor", ctypes.c_uint),
-        ("AnimationId", ctypes.c_uint)
-    ]
+if platform.system() == 'Windows':
+    from ctypes.wintypes import  DWORD, BOOL, HRGN
+    user32 = ctypes.windll.user32
+    dwm = ctypes.windll.dwmapi
 
 
-class WINDOWCOMPOSITIONATTRIBDATA(ctypes.Structure):
-    _fields_ = [
-        ("Attribute", ctypes.c_int),
-        ("Data", ctypes.POINTER(ctypes.c_int)),
-        ("SizeOfData", ctypes.c_size_t)
-    ]
+    class ACCENTPOLICY(ctypes.Structure):
+        _fields_ = [
+            ("AccentState", ctypes.c_uint),
+            ("AccentFlags", ctypes.c_uint),
+            ("GradientColor", ctypes.c_uint),
+            ("AnimationId", ctypes.c_uint)
+        ]
 
 
-class DWM_BLURBEHIND(ctypes.Structure):
-    _fields_ = [
-        ('dwFlags', DWORD), 
-        ('fEnable', BOOL),  
-        ('hRgnBlur', HRGN), 
-        ('fTransitionOnMaximized', BOOL) 
-    ]
+    class WINDOWCOMPOSITIONATTRIBDATA(ctypes.Structure):
+        _fields_ = [
+            ("Attribute", ctypes.c_int),
+            ("Data", ctypes.POINTER(ctypes.c_int)),
+            ("SizeOfData", ctypes.c_size_t)
+        ]
 
 
-class MARGINS(ctypes.Structure):
-    _fields_ = [("cxLeftWidth", ctypes.c_int),
-                ("cxRightWidth", ctypes.c_int),
-                ("cyTopHeight", ctypes.c_int),
-                ("cyBottomHeight", ctypes.c_int)
-                ]
+    class DWM_BLURBEHIND(ctypes.Structure):
+        _fields_ = [
+            ('dwFlags', DWORD), 
+            ('fEnable', BOOL),  
+            ('hRgnBlur', HRGN), 
+            ('fTransitionOnMaximized', BOOL) 
+        ]
+
+
+    class MARGINS(ctypes.Structure):
+        _fields_ = [("cxLeftWidth", ctypes.c_int),
+                    ("cxRightWidth", ctypes.c_int),
+                    ("cyTopHeight", ctypes.c_int),
+                    ("cyBottomHeight", ctypes.c_int)
+                    ]
 
 
 def Win7Blur(HWND):
@@ -89,24 +91,33 @@ def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
     
     user32.SetWindowCompositionAttribute(HWND, data)
     
-    print(HWND,Acrylic,Dark)
-    
     if Dark: 
         data.Attribute = 26 #WCA_USEDARKMODECOLORS
         user32.SetWindowCompositionAttribute(HWND, data)
 
+def BlurLinux(WID): #may not work in all distros (working in Deepin)
+    import os
+
+    c = "xprop -f _KDE_NET_WM_BLUR_BEHIND_REGION 32c -set _KDE_NET_WM_BLUR_BEHIND_REGION 0 -id " + str(WID)
+    os.system(c)
+
+
 def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False):
-    import platform
     release = platform.release()
-    
-    if release == 'Vista': 
-        Win7Blur(HWND)
-    else:
-        release = int(float(release))
-        if release == 10 or release == 8 or release == 11: #idk what windows 8.1 spits, if is '8.1' int(float(release)) will work...
-            blur(HWND,hexColor,Acrylic,Dark)
-        else:
+    system = platform.system()
+
+    if system == 'Windows':
+        if release == 'Vista': 
             Win7Blur(HWND)
+        else:
+            release = int(float(release))
+            if release == 10 or release == 8 or release == 11: #idk what windows 8.1 spits, if is '8.1' int(float(release)) will work...
+                blur(HWND,hexColor,Acrylic,Dark)
+            else:
+                Win7Blur(HWND)
+    
+    if system == 'Linux':
+        BlurLinux(HWND)
 
 if __name__ == '__main__':
     import sys
@@ -122,7 +133,7 @@ if __name__ == '__main__':
 
             hWnd = self.winId()
             #print(hWnd)
-            GlobalBlur(hWnd,Dark=True,Acrylic=True)
+            GlobalBlur(hWnd,Dark=True)
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
@@ -134,4 +145,3 @@ if __name__ == '__main__':
     #ExtendFrameIntoClientArea(mw.winId())
 
     sys.exit(app.exec_())
-
