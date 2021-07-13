@@ -42,18 +42,21 @@ if platform.system() == 'Windows':
                     ]
 
 
-def Win7Blur(HWND):
-    DWM_BB_ENABLE = 0x01
-    bb = DWM_BLURBEHIND()
-    bb.dwFlags = DWM_BB_ENABLE
-    bb.fEnable = 1
-    bb.hRgnBlur = 1
-    dwm.DwmEnableBlurBehindWindow(HWND, ctypes.byref(bb))
-
-
 def ExtendFrameIntoClientArea(HWND):
-    margins = MARGINS(0, 0, 0, 0)
+    margins = MARGINS(-1, -1, -1, -1)
     dwm.DwmExtendFrameIntoClientArea(HWND, ctypes.byref(margins))
+
+
+def Win7Blur(HWND,Acrylic):
+    if Acrylic == False:
+        DWM_BB_ENABLE = 0x01
+        bb = DWM_BLURBEHIND()
+        bb.dwFlags = DWM_BB_ENABLE
+        bb.fEnable = 1
+        bb.hRgnBlur = 1
+        dwm.DwmEnableBlurBehindWindow(HWND, ctypes.byref(bb))
+    else:
+        ExtendFrameIntoClientArea(HWND)
 
 
 def HEXtoRGBAint(HEX:str):
@@ -108,13 +111,13 @@ def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False):
 
     if system == 'Windows':
         if release == 'Vista': 
-            Win7Blur(HWND)
+            Win7Blur(HWND,Acrylic)
         else:
             release = int(float(release))
             if release == 10 or release == 8 or release == 11: #idk what windows 8.1 spits, if is '8.1' int(float(release)) will work...
                 blur(HWND,hexColor,Acrylic,Dark)
             else:
-                Win7Blur(HWND)
+                Win7Blur(HWND,Acrylic)
     
     if system == 'Linux':
         BlurLinux(HWND)
