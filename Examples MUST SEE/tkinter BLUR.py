@@ -9,7 +9,6 @@ root.wm_attributes("-transparent", 'green')
 root.geometry('500x400')
 root.update()
 
-global HWND
 HWND = ctypes.windll.user32.GetForegroundWindow()
 
 GlobalBlur(HWND)
@@ -21,7 +20,7 @@ def color2(hex):
     blur(HWND,hexColor=hex,Acrylic=True)
 
 def Win7():
-    Win7Blur(HWND)
+    Win7Blur(HWND,Acrylic=False)
 
 e = Entry(width=9)
 e.insert(0,'#12121240')

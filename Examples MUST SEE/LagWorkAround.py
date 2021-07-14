@@ -10,7 +10,6 @@ root.wm_attributes("-transparent", 'green')
 root.geometry('500x400')
 root.update()
 
-global HWND
 HWND = ctypes.windll.user32.GetForegroundWindow()
 
 GlobalBlur(HWND,Acrylic=True) #Enable Acrylic
