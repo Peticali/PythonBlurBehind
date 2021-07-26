@@ -12,7 +12,7 @@ if platform.system() == 'Darwin':
 
 setup(
     name="BlurWindow",
-    version="1.1.7",
+    version="1.1.8",
     description="Blur PySide, Tkinter, etc windows.",
     url="https://github.com/Peticali/PythonBlurBehind",
     author="Peticali",

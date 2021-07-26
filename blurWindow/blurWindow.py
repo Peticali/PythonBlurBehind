@@ -22,11 +22,13 @@ if platform.system() == 'Darwin':
         content = window.contentView()
 
         try:
-            container = QMacCocoaViewContainer(0,QWidget)
+            from PyQt5.QtWidgets import QMacCocoaViewContainer
+            
         except:
             print('You need PyQt5')
             exit()
-        
+            
+        container = QMacCocoaViewContainer(0,QWidget)
         content.addSubview_positioned_relativeTo_(visualEffectView, NSWindowBelow, container)  
 
         if TitleBar:
