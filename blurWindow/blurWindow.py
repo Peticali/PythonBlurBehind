@@ -2,6 +2,42 @@
 import platform
 import ctypes
 
+if platform.system() == 'Darwin':
+    from AppKit import *
+
+    def MacBlur(QWidget,Material=NSVisualEffectMaterialPopover,TitleBar:bool=True):
+        #WIP, trying to implement CGSSetWindowBackgroundBlurRadius too
+        frame = NSMakeRect(0, 0, QWidget.width(), QWidget.height())
+        view = objc.objc_object(c_void_p=QWidget.winId().__int__())
+
+        visualEffectView = NSVisualEffectView.new()
+        visualEffectView.setAutoresizingMask_(NSViewWidthSizable|NSViewHeightSizable) #window resizable
+        #visualEffectView.setWantsLayer_(True)
+        visualEffectView.setFrame_(frame)
+        visualEffectView.setState_(NSVisualEffectStateActive)
+        visualEffectView.setMaterial_(Material) #https://developer.apple.com/documentation/appkit/nsvisualeffectmaterial
+        visualEffectView.setBlendingMode_(NSVisualEffectBlendingModeBehindWindow)
+
+        window = view.window()
+        content = window.contentView()
+
+        try:
+            container = QMacCocoaViewContainer(0,QWidget)
+        except:
+            print('You need PyQt5')
+            exit()
+        
+        content.addSubview_positioned_relativeTo_(visualEffectView, NSWindowBelow, container)  
+
+        if TitleBar:
+            #TitleBar with blur
+            window.setTitlebarAppearsTransparent_(True)
+            window.setStyleMask_(window.styleMask() | NSFullSizeContentViewWindowMask)
+
+        #appearance = NSAppearance.appearanceNamed_('NSAppearanceNameVibrantDark')
+        #window.setAppearance_(appearance)
+
+
 if platform.system() == 'Windows':
     from ctypes.wintypes import  DWORD, BOOL, HRGN
     user32 = ctypes.windll.user32
@@ -98,6 +134,7 @@ def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
         data.Attribute = 26 #WCA_USEDARKMODECOLORS
         user32.SetWindowCompositionAttribute(HWND, data)
 
+
 def BlurLinux(WID): #may not work in all distros (working in Deepin)
     import os
 
@@ -105,7 +142,7 @@ def BlurLinux(WID): #may not work in all distros (working in Deepin)
     os.system(c)
 
 
-def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False):
+def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False,QWidget=None):
     release = platform.release()
     system = platform.system()
 
@@ -122,10 +159,13 @@ def GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False):
     if system == 'Linux':
         BlurLinux(HWND)
 
+    if system == 'Darwin':
+        MacBlur(QWidget)
+
 if __name__ == '__main__':
     import sys
-    from PySide2.QtWidgets import *
-    from PySide2.QtCore import *
+    from PyQt5.QtWidgets import *
+    from PyQt5.QtCore import *
 
     class MainWindow(QWidget):
         def __init__(self):
@@ -133,10 +173,12 @@ if __name__ == '__main__':
             #self.setWindowFlags(Qt.FramelessWindowHint)
             self.setAttribute(Qt.WA_TranslucentBackground)
             self.resize(500, 400)
-
+            
             hWnd = self.winId()
             #print(hWnd)
-            GlobalBlur(hWnd,Dark=True)
+            l = QLabel('Can you see me?',self)
+            GlobalBlur(hWnd,Dark=True,QWidget=self)
+            
 
             self.setStyleSheet("background-color: rgba(0, 0, 0, 0)")
 
