@@ -35,7 +35,7 @@ Parameters/Functions:
     MacBlur(QWidget,Material)
 
     #NEW, Blur Windows Vista, 7, 8, 8.1, 10, 11, Linux, MacOS Auto
-    GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False)
+    GlobalBlur(HWND,hexColor=False,Acrylic=False,Dark=False,QWidget=QWidget)
 
 
 Example:
