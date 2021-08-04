@@ -41,7 +41,7 @@ if platform.system() == 'Darwin':
 
 
 if platform.system() == 'Windows':
-    from ctypes.wintypes import  DWORD, BOOL, HRGN
+    from ctypes.wintypes import  DWORD, BOOL, HRGN, HWND
     user32 = ctypes.windll.user32
     dwm = ctypes.windll.dwmapi
 
@@ -80,6 +80,11 @@ if platform.system() == 'Windows':
                     ]
 
 
+    SetWindowCompositionAttribute = user32.SetWindowCompositionAttribute
+    SetWindowCompositionAttribute.argtypes = (HWND, WINDOWCOMPOSITIONATTRIBDATA)
+    SetWindowCompositionAttribute.restype = ctypes.c_int
+
+
 def ExtendFrameIntoClientArea(HWND):
     margins = MARGINS(-1, -1, -1, -1)
     dwm.DwmExtendFrameIntoClientArea(HWND, ctypes.byref(margins))
@@ -107,7 +112,7 @@ def HEXtoRGBAint(HEX:str):
     return int(gradientColor, base=16)
 
 
-def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
+def blur(hwnd, hexColor=False, Acrylic=False, Dark=False):
     accent = ACCENTPOLICY()
     accent.AccentState = 3 #Default window Blur #ACCENT_ENABLE_BLURBEHIND
 
@@ -130,11 +135,11 @@ def blur(HWND,hexColor=False,Acrylic=False,Dark=False):
     data.SizeOfData = ctypes.sizeof(accent)
     data.Data = ctypes.cast(ctypes.pointer(accent), ctypes.POINTER(ctypes.c_int))
     
-    user32.SetWindowCompositionAttribute(HWND, data)
+    SetWindowCompositionAttribute(int(hwnd), data)
     
     if Dark: 
         data.Attribute = 26 #WCA_USEDARKMODECOLORS
-        user32.SetWindowCompositionAttribute(HWND, data)
+        SetWindowCompositionAttribute(int(hwnd), data)
 
 
 def BlurLinux(WID): #may not work in all distros (working in Deepin)
