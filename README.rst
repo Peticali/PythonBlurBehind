@@ -18,7 +18,7 @@ Parameters/Functions:
 
     #HWND = PID
     #Acrylic = True/False #For Acrylic Design (lag WorkAround https://github.com/Peticali/PythonBlurBehind/blob/main/Examples%20MUST%20SEE/LagWorkAround.py)
-    #hexColor = Background color, False for nothing
+    #hexColor = Background color, False for nothing (in acrylic the first byte is noise opacity and the remaining in order Blue, Green, Red)
     #Dark = White icons
     #QWidget = Your parent (for Mac)
     #Material = https://developer.apple.com/documentation/appkit/nsvisualeffectmaterial
