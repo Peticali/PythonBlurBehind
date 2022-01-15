@@ -83,3 +83,4 @@ MacOS (BigSur):
 .. image:: https://i.imgur.com/qVSZnIw.png
     :width: 400
     
+This code needs to be completely revised and rewritten, it was done as quickly as possible
